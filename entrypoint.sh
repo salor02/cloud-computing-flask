@@ -1,8 +1,12 @@
 #!/bin/bash
 set -e
 
-echo "Applying database migrations..."
-flask db upgrade
+if [[ ! -d "migrations" ]]; then
+    echo "migrations folder does not exists, db need to be initialized"
+else
+    echo "Applying database migrations..."
+    flask db upgrade
+fi
 
 echo "Starting Gunicorn..."
 exec "$@"
