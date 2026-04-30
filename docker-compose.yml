@@ -1,0 +1,32 @@
+networks:
+  blognet:
+    name: 'blognet'
+services:  
+  postgresdb:
+    image: postgres:18-bookworm
+    container_name: postgresdb
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    networks:
+      - blognet
+    volumes:
+      - pg-data:/var/lib/postgresql
+    restart: unless-stopped
+
+  blog:
+    build: .
+    container_name: blog
+    env_file:
+      - .env
+    ports:
+      - "8900:8080"
+    networks:
+      - blognet
+    restart: unless-stopped
+    depends_on:
+      - postgresdb
+
+volumes:
+  pg-data:

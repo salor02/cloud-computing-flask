@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import markdown
+import os
 import sys
 from datetime import datetime as dt
 from flask import Flask, render_template
@@ -14,7 +15,8 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 freezer = Freezer(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://flask:passwordhere@172.17.0.2:5432/blog"
+# unique change made to the legacy app, needed to route sql requests through docker network
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
