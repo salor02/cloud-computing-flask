@@ -1,8 +1,8 @@
-title: My first try at freelancing
+title: My second try at freelancing
 subtitle: Starting my second year of my bachelor's degree in Software Engineering, I decided to try freelancing, results were dreadful. 
 author: Francesco Faenza
 author_image: francesco_faenza_profile_picture.jpg
-date: November 2, 2022
+date: November 2 2022
 image: my-first-freelance-exp.png
 permalink: my-second-freelance-exp
 tags: experience
