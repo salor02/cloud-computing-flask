@@ -4,7 +4,7 @@ author: Francesco Faenza
 author_image: francesco_faenza_profile_picture.jpg
 date: November 2, 2022
 image: my-first-freelance-exp.png
-permalink: my-first-freelance-exp
+permalink: my-second-freelance-exp
 tags: experience
 shortcontent: "Starting my second year of my bachelor's degree in Software Engineering, a group of students was already working on paid projects here and there. People were developing Android apps like I was winning beer contests, so I decided to try freelancing myself. A hint: it was dreadful."
 
