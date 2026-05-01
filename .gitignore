@@ -1,7 +1,6 @@
 venv
 .idea
 .code
-
+__pycache__
 *.pyc
-
 migrations
