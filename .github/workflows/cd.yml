@@ -33,16 +33,17 @@ jobs:
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ github.sha }}
 
+  # this job runs on a local server
   deploy:
     needs: build-and-push
     runs-on: self-hosted
 
     steps:
       - name: Pull new image
-        run: docker compose -f /home/cloud-computing-flask/docker-compose.yml pull blog
+        run: docker compose -f /home/salva/cloud-computing-flask/docker-compose.yml pull blog
 
       - name: Recreate container
-        run: docker compose -f /home/cloud-computing-flask/docker-compose.yml up -d --force-recreate blog
+        run: docker compose -f /home/salva/cloud-computing-flask/docker-compose.yml up -d --force-recreate blog
 
       - name: Clean up old images
         run: docker image prune -f
