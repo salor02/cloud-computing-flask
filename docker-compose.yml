@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
 
   blog:
-    build: .
+    image: ghcr.io/salor02/cloud-computing-flask:latest
     container_name: blog
     env_file:
       - .env
