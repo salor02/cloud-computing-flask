@@ -1,0 +1,69 @@
+# traefiknet-swarm is a dedicated overlay network created for the exam purpose, used by
+# both traefik container and blog-app swarm
+# docker network create --driver=overlay --attachable traefiknet-swarm
+networks:
+  blognet:
+    name: 'blognet'
+    driver: overlay
+  traefiknet-swarm:
+    external: true
+    name: 'traefiknet-swarm'
+
+services:  
+  postgresdb:
+    image: postgres:18-bookworm
+    environment:
+      POSTGRES_USER: flask
+      POSTGRES_PASSWORD: passwordhere
+      POSTGRES_DB: blog
+    ports:
+      - "5432:5432"
+    networks:
+      - blognet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 10s
+      start_period: 5s
+      retries: 5
+    volumes:
+      - pg-data:/var/lib/postgresql
+      - ./migrations:/app/migrations
+    deploy:
+      replicas: 1 
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  blog:
+    image: ghcr.io/salor02/cloud-computing-flask:latest
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql://flask:passwordhere@postgresdb:5432/blog
+    ports:
+      - "8900:8080"
+    networks:
+      - blognet
+      - traefiknet-swarm
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.docker.network: "traefiknet-swarm" 
+        traefik.http.routers.cloudflask.entrypoints: "websecure"
+        traefik.http.routers.cloudflask.rule: "Host(`cloudflask.salvatoredilorenzo.com`)"
+        traefik.http.services.cloudflask.loadbalancer.server.port: "8080"
+        traefik.http.routers.cloudflask.tls: "true"
+      replicas: 1 
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+volumes:
+  pg-data:
