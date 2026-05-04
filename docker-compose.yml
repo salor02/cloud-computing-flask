@@ -1,6 +1,10 @@
 networks:
   blognet:
     name: 'blognet'
+  traefiknet:
+    name: 'traefiknet'
+    external: true
+
 services:  
   postgresdb:
     image: postgres:18-bookworm
@@ -31,6 +35,15 @@ services:
       - "8900:8080"
     networks:
       - blognet
+      - traefiknet
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefiknet 
+      traefik.http.routers.cloudflask.entrypoints: websecure
+      traefik.http.routers.cloudflask.rule: Host(`cloudflask.salvatoredilorenzo.com`)
+      traefik.http.services.cloudflask.loadbalancer.server.port: 8080
+      traefik.http.routers.cloudflask.tls: true
+
     restart: unless-stopped
     depends_on:
       postgresdb:
