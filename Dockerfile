@@ -16,7 +16,7 @@ RUN chmod +x /usr/local/bin/wait-for-it.sh
 
 COPY . .
 
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8080
 
