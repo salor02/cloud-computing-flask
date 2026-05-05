@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+# this is a redundancy in case of launch by docker compose
 echo "Waiting for database..."
 wait-for-it.sh "$POSTGRES_HOST:$POSTGRES_PORT" --timeout=60
 

@@ -16,8 +16,6 @@ services:
       POSTGRES_USER: flask
       POSTGRES_PASSWORD: passwordhere
       POSTGRES_DB: blog
-    ports:
-      - "5432:5432"
     networks:
       - blognet
     healthcheck:
@@ -28,12 +26,11 @@ services:
       retries: 5
     volumes:
       - pg-data:/var/lib/postgresql
-      - ./migrations:/app/migrations
     deploy:
       replicas: 1 
       placement:
         constraints:
-          - node.role == manager
+          - node.role == manager # fix the execution node for the db in order to achieve data consistency
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -58,7 +55,7 @@ services:
         traefik.http.routers.cloudflask.rule: "Host(`cloudflask.salvatoredilorenzo.com`)"
         traefik.http.services.cloudflask.loadbalancer.server.port: "8080"
         traefik.http.routers.cloudflask.tls: "true"
-      replicas: 1
+      replicas: 3
       restart_policy:
         condition: on-failure
         delay: 5s

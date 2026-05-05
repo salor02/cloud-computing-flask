@@ -11,8 +11,6 @@ services:
     container_name: postgresdb
     env_file:
       - .env
-    ports:
-      - "5432:5432"
     networks:
       - blognet
     healthcheck:
@@ -23,7 +21,6 @@ services:
       retries: 5
     volumes:
       - pg-data:/var/lib/postgresql
-      - ./migrations:/app/migrations
     restart: unless-stopped
 
   blog:
@@ -43,7 +40,6 @@ services:
       traefik.http.routers.cloudflask.rule: Host(`cloudflask.salvatoredilorenzo.com`)
       traefik.http.services.cloudflask.loadbalancer.server.port: 8080
       traefik.http.routers.cloudflask.tls: true
-
     restart: unless-stopped
     depends_on:
       postgresdb:
