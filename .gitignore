@@ -3,4 +3,3 @@ venv
 .code
 __pycache__
 *.pyc
-migrations
