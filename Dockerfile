@@ -16,11 +16,10 @@ RUN chmod +x /usr/local/bin/wait-for-it.sh
 
 COPY . .
 
-COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080
 
 # the entrypoint script waits for the database and applies possible migrations
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "wsgi:app"]
