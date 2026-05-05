@@ -39,12 +39,10 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Pull new image
-        run: docker compose -f /home/salva/cloud-computing-flask/docker-compose.yml pull blog
+      - uses: actions/checkout@v4
 
-      - name: Recreate container
-        run: docker compose -f /home/salva/cloud-computing-flask/docker-compose.yml up -d --force-recreate blog
+      - name: Deploy Docker Swarm stack
+        run: docker stack deploy -c docker-stack.yml cloudflask
 
       - name: Clean up old images
         run: docker image prune -f
-

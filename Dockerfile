@@ -10,6 +10,9 @@ ENV PYTHONUNBUFFERED=1
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
 COPY . .
 
 COPY entrypoint.sh /entrypoint.sh
@@ -17,6 +20,6 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080
 
-# the entrypoiny script performs db upgrade in order to apply possible migrations
+# the entrypoint script waits for the database and applies possible migrations
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "wsgi:app"]

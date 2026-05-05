@@ -42,6 +42,8 @@ services:
   blog:
     image: ghcr.io/salor02/cloud-computing-flask:latest
     environment:
+      POSTGRES_HOST: postgresdb
+      POSTGRES_PORT: 5432
       SQLALCHEMY_DATABASE_URI: postgresql://flask:passwordhere@postgresdb:5432/blog
     ports:
       - "8900:8080"
@@ -56,10 +58,7 @@ services:
         traefik.http.routers.cloudflask.rule: "Host(`cloudflask.salvatoredilorenzo.com`)"
         traefik.http.services.cloudflask.loadbalancer.server.port: "8080"
         traefik.http.routers.cloudflask.tls: "true"
-      replicas: 1 
-      placement:
-        constraints:
-          - node.role == manager
+      replicas: 1
       restart_policy:
         condition: on-failure
         delay: 5s
